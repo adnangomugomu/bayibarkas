@@ -9,6 +9,7 @@ class Data extends MY_controller
     {
         parent::__construct();
         $this->path = 'backend/admin/laundry/data/';
+        $this->load->model($this->path . 'datatable', 'm_main');
     }
 
     public function index()
@@ -27,9 +28,12 @@ class Data extends MY_controller
             ],
         ];
 
-        $data['ref_status_laundry'] = ref_status_laundry();
-
         $this->templates->load($data);
+    }
+
+    function get_data()
+    {
+        echo $this->m_main->generate_table();
     }
 }
 

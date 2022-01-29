@@ -55,14 +55,7 @@
                                         <div class="mb-3 form-group">
                                             <label class="form-label">Password</label>
                                             <input type="password" name="password" class="form-control" placeholder="Enter password">
-                                        </div>
-
-                                        <div class="mb-3 form-group">
-                                            <label class="form-label">
-                                                <canvas style="width: 200px;height: 60px;" id="canvas"></canvas>
-                                            </label>
-                                            <input type="text" name="code" class="form-control" placeholder="Enter captha">
-                                        </div>
+                                        </div>                                       
 
                                         <div class="mb-3">
                                             <button class="btn btn-primary w-100 waves-effect waves-light" type="submit">Log In</button>

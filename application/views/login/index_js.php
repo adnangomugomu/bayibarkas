@@ -12,13 +12,7 @@
 <script src="<?= base_url('assets/plugin/jquery-captcha.min.js') ?>"></script>
 
 <script>
-    const URL = "<?= base_url() ?>";
-
-    const captcha = new Captcha($('#canvas'), {
-        length: 5,
-        caseSensitive: true,
-        clickRefresh:true,
-    });
+    const URL = "<?= base_url() ?>";   
 
     var validation_tambah = function() {
         var validation_tambah = function() {
@@ -56,18 +50,7 @@
             $('#form_data').on('submit', function(e) {
                 if ($(this).valid()) {
                     e.preventDefault();
-                    var is_valid_captha = captcha.valid($('input[name="code"]').val());
-                    if (is_valid_captha) {
-                        submit_data(this);
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Gagal',
-                            text: 'Captha tidak sesuai',
-                            timer: 1500,
-                            showConfirmButton: false,
-                        });
-                    }
+                    submit_data(this);
                 }
             });
 

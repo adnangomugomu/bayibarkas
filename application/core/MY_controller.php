@@ -19,6 +19,13 @@ class MY_controller extends CI_Controller
         $this->username = $_SESSION['username'];
         $this->foto = $_SESSION['foto'];
     }
+
+    function get_kode_laundry()
+    {
+        $this->db->select('CONCAT("LB", LPAD( (count(id)+1), 4 , "0" ) ) as generate_kode');
+        $kode = $this->db->get('data_laundry')->row();
+        return $kode->generate_kode;
+    }
 }
 
 /* End of file MY_controller.php */

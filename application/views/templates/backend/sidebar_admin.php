@@ -23,21 +23,21 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li>
-                            <a class="<?= cek_aktif(@$li_active, 'laundry_data', 'active') ?>" href="<?= base_url('backend/admin/laundry/data') ?>">
+                            <a class="<?= cek_aktif(@$li_active, 'tambah_laundry', 'active') ?>" href="<?= base_url('backend/admin/laundry/tambah') ?>">
                                 <i class="bx bx-right-arrow-alt"></i>
-                                <span>Data</span>
+                                <span>Tambah Laundry</span>
                             </a>
                         </li>
                         <li>
-                            <a class="<?= cek_aktif(@$li_active, 'laundry_status', 'active') ?>" href="<?= base_url('backend/admin/laundry/status') ?>">
+                            <a class="<?= cek_aktif(@$li_active, 'data_laundry', 'active') ?>" href="<?= base_url('backend/admin/laundry/data') ?>">
                                 <i class="bx bx-right-arrow-alt"></i>
-                                <span>Status</span>
+                                <span>Data Laundry</span>
                             </a>
                         </li>
                         <li>
                             <a class="<?= cek_aktif(@$li_active, 'laundry_rekap', 'active') ?>" href="<?= base_url('backend/admin/laundry/rekap') ?>">
                                 <i class="bx bx-right-arrow-alt"></i>
-                                <span>Rekap</span>
+                                <span>Rekap Data</span>
                             </a>
                         </li>
                     </ul>

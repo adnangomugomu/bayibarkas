@@ -3,7 +3,7 @@
 class Datatable extends CI_Model
 {
     var $table = 'data_laundry a'; //nama tabel dari database
-    var $column_order = array(null, 'a.id', 'a.id_estimasi', 'a.id_metode_pembayaran', 'a.biaya', 'a.waktu', null, null,); //field yang ada di table user
+    var $column_order = array(null, 'a.id', 'a.id_estimasi', null, 'a.biaya', 'a.waktu', null, null,); //field yang ada di table user
     var $column_search = array('a.nama_pemilik', 'a.nama_barang', 'a.alamat', 'a.no_hp', 'a.kode', 'a.token'); //field yang diizin untuk pencarian
     var $order = array('a.id' => 'desc'); // default order
     var $menu;
@@ -16,7 +16,9 @@ class Datatable extends CI_Model
     private function _get_datatables_query()
     {
 
-        $this->db->select('a.*, b.jenis as estimasi, c.jenis as metode');
+        $waktu_laundry = "(select f.waktu from laundry_has_status f where f.id_data_laundry = a.id and f.is_active = '1' order by f.id asc limit 1) as waktu";
+        $status_laundry = "(select e.status from laundry_has_status d left join ref_status_laundry e on e.id = d.id_status where d.id_data_laundry = a.id and d.is_active = '1' order by d.id desc limit 1) as status_laundry";
+        $this->db->select("a.*, b.jenis as estimasi, c.jenis as metode, $status_laundry, $waktu_laundry");
         $this->db->where('a.is_active', '1');
         $this->db->join('ref_estimasi_penanganan_laundry b', 'b.id = a.id_estimasi', 'left');
         $this->db->join('ref_metode_pembayaran c', 'c.id = a.id_metode_pembayaran', 'left');
@@ -89,13 +91,20 @@ class Datatable extends CI_Model
             ';
 
             $tombol_ubah = '                  
-                <button title="ubah" type="button" class="btn btn-success btn-sm waves-effect waves-light tombol_ubah" data-id="' . $field->id . '">
+                <button title="edit" type="button" class="btn btn-success btn-sm waves-effect waves-light tombol_ubah" data-id="' . sha1($field->id) . '">
                     <i class="bx bx-edit font-size-16 align-middle"></i>
                 </button>
             ';
 
+            $tombol_detail = '     
+                <br>              
+                <span class="text-success tombol_detail" data-id="' . $field->id . '">
+                    <i class="fa fa-edit"></i> cek
+                </span>
+            ';
+
             $aksi = '
-                <div style="width:120px;margin:0 auto;">' . $tombol_hapus . $tombol_ubah . '</div>
+                <div style="width:120px;margin:0 auto;">'  . $tombol_ubah  . $tombol_hapus . '</div>
             ';
 
             $this->db->select('b.jenis');
@@ -115,14 +124,35 @@ class Datatable extends CI_Model
                 <span class="badge bg-primary kode" title="Token ' . $field->token . '">' . $field->kode . '</span>
             ';
 
+            $nama_pemilik = '
+                <span class="text-bold">' . $field->nama_pemilik . '</span>
+                <br>
+                <span>' . $field->alamat . '</span>
+                <br>
+                <span class="badge bg-primary">' . $field->no_hp . '</span>
+            ';
+
+            $biaya = '
+                <span>' . number_format($field->biaya, 0, ',', '.') . '</span>
+                <br>
+                <span class="text-danger">' . $field->metode . '</span>
+            ';
+
+            $tombol_status = '                  
+                <button title="status laundry" type="button" class="btn btn-outline-success btn-sm waves-effect waves-light tombol_status" data-kode="' . $field->kode . '" data-id="' . $field->id . '">
+                    ' . $field->status_laundry . '
+                </button>
+            ';
+
             $row[] = $no;
+            $row[] = $field->nama_barang . $tombol_detail;
             $row[] = $kode;
             $row[] = $get_jenis;
             $row[] = $field->estimasi;
-            $row[] = $field->metode;
-            $row[] = number_format($field->biaya, 0, ',', '.');
+            $row[] = $tombol_status;
+            $row[] = $biaya;
             $row[] = date('d-M-Y', strtotime($field->waktu));
-            $row[] = '';
+            $row[] = $nama_pemilik;
             $row[] = $aksi;
 
             $data[] = $row;

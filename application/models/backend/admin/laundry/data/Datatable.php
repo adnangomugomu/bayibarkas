@@ -139,7 +139,7 @@ class Datatable extends CI_Model
             ';
 
             $tombol_status = '                  
-                <button title="status laundry" type="button" class="btn btn-outline-success btn-sm waves-effect waves-light tombol_status" data-kode="' . $field->kode . '" data-id="' . $field->id . '">
+                <button style="width:120px;" title="status laundry" type="button" class="btn btn-outline-success btn-sm waves-effect waves-light tombol_status" data-kode="' . $field->kode . '" data-id="' . $field->id . '">
                     ' . $field->status_laundry . '
                 </button>
             ';

@@ -8,6 +8,7 @@
                         <label class="col-12">Bulan</label>
                         <div class="col-md-12">
                             <select class="js-select2 form-control select_bulan">
+                                <option value="all">Semua Bulan</option>
                                 <?php foreach ($ref_bulan as $key) : ?>
                                     <option value="<?= $key->id ?>"><?= $key->bulan ?></option>
                                 <?php endforeach; ?>

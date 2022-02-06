@@ -102,6 +102,16 @@ class Rekap extends MY_controller
     {
         $this->m_cetak->cetak_harian($bulan, $tahun);
     }
+
+    public function cetak_bulanan($tahun)
+    {
+        $this->m_cetak->cetak_bulanan($tahun);
+    }
+
+    public function cetak_tahunan()
+    {
+        $this->m_cetak->cetak_tahunan();
+    }
 }
 
 /* End of file Dashboard.php */

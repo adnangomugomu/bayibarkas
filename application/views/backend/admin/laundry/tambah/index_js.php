@@ -6,6 +6,25 @@
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 
+<!-- choices js -->
+<script src="<?= base_url('assets/template/') ?>assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
+<!-- init js -->
+<script src="<?= base_url('assets/template/') ?>assets/js/app.js"></script>
+
+<!-- Custom Select -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        new Choices("#jenis-barang", {
+            searchEnabled: !1
+        });
+
+        new Choices("#kelengkapan-barang", {
+            removeItemButton: !0
+        });
+        
+    })
+</script>
+
 <script>
     $('.datepicker').datepicker({
         dateFormat: 'dd-mm-yy',

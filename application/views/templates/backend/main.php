@@ -13,6 +13,8 @@
     <link rel="shortcut icon" href="<?= base_url('uploads/img/toko.png') ?>">
     <!-- preloader css -->
     <link rel="stylesheet" href="<?= base_url('assets/template/') ?>assets/css/preloader.min.css" type="text/css" />
+    <!-- choices css -->
+    <link href="<?= base_url('assets/template/') ?>assets/libs/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" type="text/css" />
     <!-- Bootstrap Css -->
     <link href="<?= base_url('assets/template/') ?>assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
     <!-- Icons Css -->

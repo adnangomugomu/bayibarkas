@@ -49,19 +49,22 @@
                                     <form class="mt-4 pt-2 js-validation-signin" id="form_data" action="#">
                                         <div class="mb-3 form-group">
                                             <label class="form-label">Username</label>
-                                            <input type="text" name="username" class="form-control" id="username" placeholder="Enter username">
+                                            <input type="text" name="username" class="form-control" id="username" placeholder="Masukkan Username">
                                         </div>
 
-                                        <div class="mb-3 form-group">
-                                            <label class="form-label">Password</label>
-                                            <input type="password" name="password" class="form-control" placeholder="Enter password">
+                                        <div class="mb-5 form-group">
+                                            <label class="form-label">Kata Sandi</label>
+                                            <div class="input-group auth-pass-inputgroup">
+                                                <input type="password" name="password" class="form-control" placeholder="Masukkan Kata Sandi" aria-label="Password" aria-describedby="password-addon">
+                                                <button class="btn btn-light shadow-none ms-0" type="button" id="password-addon"><i class="mdi mdi-eye-outline"></i></button>
+                                            </div>
                                         </div>                                       
 
                                         <div class="mb-3">
                                             <button class="btn btn-primary w-100 waves-effect waves-light" type="submit">Log In</button>
                                         </div>
 
-                                        <a href="<?= base_url() ?>" class="text-center d-block">back to home</a>
+                                        <a href="<?= base_url() ?>" class="text-center d-block">Kembali ke Beranda</a>
                                     </form>
 
                                 </div>
@@ -69,7 +72,7 @@
                                     <p class="mb-0">© <script>
                                             document.write(new Date().getFullYear())
                                         </script>
-                                        <a href="<?= base_url() ?>">BayiBarkas.com</a>
+                                        <a href="<?= base_url() ?>">www.bayibarkas.com</a>
                                     </p>
                                 </div>
                             </div>
@@ -189,7 +192,8 @@
     <script src="<?= base_url('assets/template/') ?>assets/libs/feather-icons/feather.min.js"></script>
     <!-- pace js -->
     <script src="<?= base_url('assets/template/') ?>assets/libs/pace-js/pace.min.js"></script>
-
+    <!-- password addon init -->
+    <script src="<?= base_url('assets/template/') ?>assets/js/pages/pass-addon.init.js"></script>
     <?php include('index_js.php') ?>
 </body>
 

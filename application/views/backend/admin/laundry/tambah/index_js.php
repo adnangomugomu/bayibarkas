@@ -1,3 +1,17 @@
+<!-- choices -->
+<!-- <link href="<?= base_url('assets/template/') ?>assets/libs/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" type="text/css" />
+<script src="<?= base_url('assets/template/') ?>assets/libs/choices.js/public/assets/scripts/choices.min.js"></script> -->
+
+<script>
+    $(document).ready(function() {
+
+        // new Choices("#kelengkapan_barang", {
+        //     removeItemButton: !0
+        // });
+
+    });
+</script>
+
 <script>
     var validation_tambah = function() {
         var validation_tambah = function() {
@@ -157,5 +171,76 @@
                 return false;
             }
         })
+    });
+
+    $('#select_jenis_barang').on('change', function() {
+        var id = $(this).val();
+
+        var data = new FormData();
+        data.append('id', id);
+
+        $.ajax({
+            url: URL + 'get_kelengkapan_data',
+            type: "POST",
+            data: data,
+            dataType: 'JSON',
+            processData: false,
+            contentType: false,
+            async: false,
+            beforeSend: function() {},
+            complete: function() {},
+            error: function(e) {
+                console.log(e);
+                toastr.error('gagal, terjadi kesalahan');
+            },
+            success: function(res) {
+                if (res.status == 'success') {
+
+                    $('#kelengkapan_barang').html('');
+                    var html = '';
+                    $.map(res.data.kelengkapan, function(e, i) {
+                        html += `
+                            <option data-biaya="${e.biaya}" value="${e.id}">${e.nama}</option>
+                        `;
+                    });
+                    $('#kelengkapan_barang').html(html);
+
+                    $('#checkbox_jenis_laundry').html('');
+                    var html = '';
+                    $.map(res.data.jenisLaundry, function(e, i) {
+                        html += `
+                            <div class="form-check">
+                                <input type="checkbox" name="jenis_laundry[]" value="${e.id}" class="form-check-input" id="${'jenis_'+i}">
+                                <label class="form-check-label" for="${'jenis_'+i}">${e.jenis +' - '+ formatRupiah(e.biaya)}</label>
+                            </div>
+                        `;
+                    });
+                    $('#checkbox_jenis_laundry').html(html);
+
+                    $('#radio_estimasi_penanganan').html('');
+                    var html = '';
+                    $.map(res.data.jenisPenanganan, function(e, i) {
+                        html += `
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="estimasi_penanganan" value="${e.id}" id="${'estimasi_'+i}">
+                                <label class="form-check-label" for="${'estimasi_'+i}">
+                                    ${e.jenis +' - '+ formatRupiah(e.biaya)}
+                                </label>
+                            </div>
+                        `;
+                    });
+                    $('#radio_estimasi_penanganan').html(html);
+                }
+            },
+        });
+    });
+
+    $('#kelengkapan_barang').on('change', function() {
+        var total = 0;
+        $('#kelengkapan_barang option:selected').each(function() {
+            var val = $(this).data('biaya');
+            total += val;
+        });
+        console.log(total);
     });
 </script>

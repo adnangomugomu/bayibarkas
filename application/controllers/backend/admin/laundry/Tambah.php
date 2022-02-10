@@ -27,6 +27,7 @@ class Tambah extends MY_controller
             ],
         ];
 
+        $data['ref_jenis_barang'] = ref_jenis_barang();
         $data['ref_status_laundry'] = ref_status_laundry();
         $data['ref_jenis_laundry'] = ref_jenis_laundry();
         $data['ref_estimasi_penanganan_laundry'] = ref_estimasi_penanganan_laundry();
@@ -88,6 +89,37 @@ class Tambah extends MY_controller
         json([
             'status' => 'success',
             'msg' => 'data berhasil disimpan',
+        ]);
+    }
+
+    public function get_kelengkapan_data()
+    {
+        cek_post();
+        $id = $this->input->post('id');
+
+        $this->db->where('id_ref_jenis_barang', $id);
+        $this->db->where('is_active', '1');
+        $kelengkapan = $this->db->get('ref_kelengkapan')->result();
+
+        $this->db->select('a.id, a.biaya, b.jenis');
+        $this->db->where('a.id_jenis_barang', $id);
+        $this->db->where('a.is_active', '1');
+        $this->db->join('ref_jenis_laundry b', 'b.id = a.id_jenis_laundry', 'left');
+        $jenisLaundry = $this->db->get('jenis_barang_has_jenis_laundry a')->result();
+
+        $this->db->select('a.id, a.biaya, b.jenis');
+        $this->db->where('a.id_jenis_barang', $id);
+        $this->db->where('a.is_active', '1');
+        $this->db->join('ref_estimasi_penanganan_laundry b', 'b.id = a.id_estimasi', 'left');
+        $jenisPenanganan = $this->db->get('jenis_barang_has_estimasi_penanganan a')->result();
+
+        json([
+            'status' => 'success',
+            'data' => [
+                'kelengkapan' => $kelengkapan,
+                'jenisLaundry' => $jenisLaundry,
+                'jenisPenanganan' => $jenisPenanganan,
+            ],
         ]);
     }
 }

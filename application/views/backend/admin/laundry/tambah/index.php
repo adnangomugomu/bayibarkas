@@ -83,62 +83,33 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-body">
-
-                            <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="mb-3">
-                                        <label class="form-label">Jenis Barang</label>
+                                        <label class="form-label">TOTAL</label>
                                         <div class="form-group">
-                                            <select name="jenis_barang" id="select_jenis_barang" class="js_select2 form-control">
-                                                <option value="">Pilih jenis barang</option>
-                                                <?php foreach ($ref_jenis_barang as $key) : ?>
-                                                    <option value="<?= $key->id ?>"><?= $key->nama ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Kelengkapan Barang</label>
-                                        <select placeholder="Pilih data" class="form-control js_select2" name="kelengkapan_barang[]" id="kelengkapan_barang" multiple></select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <label class="form-label">Jenis Laundry</label>
-                                        <div id="checkbox_jenis_laundry" class="form-group">
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="form-label">Estimasi Penanganan</label>
-                                        <div id="radio_estimasi_penanganan" class="form-group">
-
+                                            <input type="text" readonly name="total_harga" id="total_harga" value="0" class="form-control">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <p class="text-bold float-end">Sub Total Rp <span class="sub_total">0</span> </p>
 
                         </div>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="button" id="tombol_tambah_barang" class="btn btn-primary btn-sm mb-3">
+                            <i class="fa fa-plus"></i>
+                            Tambah Barang
+                        </button>
+                    </div>
+                </div>
+
+                <div id="list_data">
+
+                </div>
+
             </div>
         </form>
 

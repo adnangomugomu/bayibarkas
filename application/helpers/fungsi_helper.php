@@ -38,3 +38,13 @@ function generateRandomString($length = 5)
     }
     return $randomString;
 }
+
+function remove_titik($data)
+{
+    return str_replace('.', '', $data);
+}
+
+function rupiah($data)
+{
+    return number_format($data, 0, ',', '.');
+}

@@ -43,15 +43,10 @@
             },
             order: [],
             columnDefs: [{
-                    targets: [0, -1],
-                    className: 'text-center',
-                    orderable: false,
-                },
-                {
-                    targets: [6],
-                    className: 'text-end'
-                },
-            ],
+                targets: [0, 2, 3, -1],
+                className: 'text-center',
+                orderable: false,
+            }, ],
         })
 
     }

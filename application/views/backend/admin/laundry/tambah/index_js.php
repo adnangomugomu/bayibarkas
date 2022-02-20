@@ -1,17 +1,3 @@
-<!-- choices -->
-<!-- <link href="<?= base_url('assets/template/') ?>assets/libs/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" type="text/css" />
-<script src="<?= base_url('assets/template/') ?>assets/libs/choices.js/public/assets/scripts/choices.min.js"></script> -->
-
-<script>
-    $(document).ready(function() {
-
-        // new Choices("#kelengkapan_barang", {
-        //     removeItemButton: !0
-        // });
-
-    });
-</script>
-
 <script>
     var validation_tambah = function() {
         var validation_tambah = function() {
@@ -29,25 +15,13 @@
                     jQuery(e).remove();
                 },
                 rules: {
-                    'jenis_laundry[]': {
-                        required: true,
-                    },
-                    'estimasi_penanganan': {
-                        required: true,
-                    },
                     'metode_pembayaran': {
                         required: true,
                     },
                     'biaya': {
                         required: true,
                     },
-                    'waktu': {
-                        required: true,
-                    },
                     'nama': {
-                        required: true,
-                    },
-                    'merk': {
                         required: true,
                     },
                     'no_hp': {
@@ -55,13 +29,9 @@
                     },
                 },
                 messages: {
-                    'jenis_laundry': PESAN,
-                    'estimasi_penanganan': PESAN,
                     'metode_pembayaran': PESAN,
                     'biaya': PESAN,
-                    'waktu': PESAN,
                     'nama': PESAN,
-                    'merk': PESAN,
                     'no_hp': PESAN,
                 }
             });
@@ -110,7 +80,65 @@
 
 <script>
     function submit_data(form) {
-        var data = new FormData(form);
+
+        var metode_pembayaran = $('input[name=metode_pembayaran]:checked').val();
+        var nama = $('input[name=nama]').val();
+        var alamat = $('textarea[name=alamat]').val();
+        var no_hp = $('input[name=no_hp]').val();
+        var total_harga = $('input[name=total_harga]').val();
+        var data_barang = [];
+
+        $.map(tmp_generate, function(e, i) {
+            var jenis_barang = $('.data_select_' + e).val();
+            var kelengkapan = $('.data_kelengkapan_' + e).val();
+            var estimasi_penanganan = $('.estimasi_penanganan_generate_' + e + ':checked').val();
+            var sub_total = $('.data_sub_total_' + e).html();
+            var jenis_laundry = [];
+
+            $('input:checkbox.jenis_laundry_generate_' + e).each(function() {
+                var val = (this.checked ? $(this).val() : '');
+                if (val != '') jenis_laundry.push(val);
+            });
+
+            if (jenis_laundry.length == 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Perhatian',
+                    text: 'Jenis Laundry tidak boleh kosong !',
+                    timer: 2000,
+                    showConfirmButton: false,
+                });
+                throw '-';
+            }
+
+            var x = {
+                jenis_barang: jenis_barang,
+                kelengkapan: kelengkapan,
+                estimasi_penanganan: estimasi_penanganan,
+                jenis_laundry: jenis_laundry,
+                sub_total: sub_total,
+            };
+            data_barang.push(x);
+        });
+
+        if (data_barang.length == 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Perhatian',
+                text: 'Data barang masih kosong !',
+                timer: 2000,
+                showConfirmButton: false,
+            });
+            throw '-';
+        }
+
+        var data = new FormData();
+        data.append('metode_pembayaran', metode_pembayaran);
+        data.append('nama', nama);
+        data.append('alamat', alamat);
+        data.append('no_hp', no_hp);
+        data.append('total_harga', total_harga);
+        data.append('data_barang', JSON.stringify(data_barang));
 
         $.ajax({
             url: URL + 'store',
@@ -147,6 +175,61 @@
             },
         });
     }
+
+    function load_jenis_barang(class_data) {
+        $.ajax({
+            url: URL + 'jenis_barang',
+            type: "POST",
+            dataType: 'JSON',
+            processData: false,
+            contentType: false,
+            error: function(e) {
+                console.log(e);
+                toastr.error('gagal, terjadi kesalahan');
+            },
+            success: function(res) {
+                if (res.status == 'success') {
+
+                    var html = ' <option value="">Pilih jenis barang</option>';
+                    $.map(res.data, function(e, i) {
+                        html += `
+                            <option value="${e.id}">${e.nama}</option>
+                        `;
+                    });
+                    $('.data_select_' + class_data).html(html);
+
+                } else {
+                    toastr.error(res.msg);
+                }
+            },
+        });
+    }
+
+    function change_pilihan(data_generate) {
+        var total = 0;
+
+        $('.jenis_laundry_generate_' + data_generate + ':checked').each(function() {
+            var val = $(this).data('biaya');
+            total += val;
+        });
+
+        var estimasi = $('.estimasi_penanganan_generate_' + data_generate + ':checked').data('biaya');
+        if (estimasi != undefined) total += estimasi;
+
+        var key = 'total_generate_' + data_generate;
+        tmp_data_total[key] = total;
+
+        total = formatRupiah(total.toString());
+        $('.data_sub_total_' + data_generate).html(total);
+
+        var row_total = 0;
+        $.map(tmp_data_total, function(e, i) {
+            row_total += e;
+        });
+        row_total = formatRupiah(row_total.toString());
+        $('#total_harga').val(row_total);
+
+    }
 </script>
 
 <script>
@@ -173,8 +256,108 @@
         })
     });
 
-    $('#select_jenis_barang').on('change', function() {
+    function removeItem(array, item) {
+        for (var i in array) {
+            if (array[i] == item) {
+                array.splice(i, 1);
+                break;
+            }
+        }
+    }
+
+    $('body').on('click', '.tombol_hapus_generate', function() {
+        var data_generate = $(this).data('generate');
+
+        $('.list_data_generate_' + data_generate).remove();
+        change_pilihan(data_generate);
+
+        var key = 'total_generate_' + data_generate;
+        delete tmp_data_total[key];
+        removeItem(tmp_generate, data_generate);
+
+    });
+</script>
+
+<script>
+    var count_generate = 0;
+    var tmp_generate = [];
+    var tmp_data_total = {};
+
+    $('#tombol_tambah_barang').on('click', function(e) {
+        count_generate++;
+        tmp_generate.push(count_generate);
+
+        var html = `
+            <div class="col-md-12 list_data_generate_${count_generate}">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="button" data-generate="${count_generate}" class="btn btn-outline-danger btn-sm mb-1 float-end tombol_hapus_generate"><i class="bx bx-trash"></i> Hapus</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Jenis Barang</label>
+                                    <div class="form-group">
+                                        <select name="jenis_barang" data-generate="${count_generate}" class="js_select2 form-control data_select_${count_generate} select_jenis_barang">
+                                            <option value="">Pilih jenis barang</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Kelengkapan Barang</label>
+                                    <select placeholder="Pilih data" data-generate="${count_generate}" class="form-control js_select2 data_kelengkapan_${count_generate} kelengkapan_barang" name="kelengkapan_barang[]" multiple></select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Jenis Laundry</label>
+                                    <div data-generate="${count_generate}" class="form-group data_jenis_laundry_${count_generate} checkbox_jenis_laundry">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Estimasi Penanganan</label>
+                                    <div data-generate="${count_generate}" class="form-group data_estimasi_${count_generate} radio_estimasi_penanganan">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="text-bold float-end">Sub Total Rp <span data-generate="${count_generate}" class="data_sub_total_${count_generate} sub_total">0</span> </p>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        `;
+
+        $('#list_data').append(html);
+        load_jenis_barang(count_generate);
+
+        $('.js_select2').select2({
+            width: '100%'
+        });
+
+        $("html, body").animate({
+            scrollTop: $(document).height()
+        }, 200);
+    });
+
+    $('body').on('change', '.select_jenis_barang', function() {
         var id = $(this).val();
+        var data_generate = $(this).data('generate');
 
         var data = new FormData();
         data.append('id', id);
@@ -196,51 +379,52 @@
             success: function(res) {
                 if (res.status == 'success') {
 
-                    $('#kelengkapan_barang').html('');
+                    $('.data_kelengkapan_' + data_generate).html('');
                     var html = '';
                     $.map(res.data.kelengkapan, function(e, i) {
                         html += `
-                            <option data-biaya="${e.biaya}" value="${e.id}">${e.nama}</option>
+                            <option data-generate="${data_generate}" value="${e.id}">${e.nama}</option>
                         `;
                     });
-                    $('#kelengkapan_barang').html(html);
+                    $('.data_kelengkapan_' + data_generate).html(html);
 
-                    $('#checkbox_jenis_laundry').html('');
+                    $('.data_jenis_laundry_' + data_generate).html('');
                     var html = '';
                     $.map(res.data.jenisLaundry, function(e, i) {
                         html += `
                             <div class="form-check">
-                                <input type="checkbox" name="jenis_laundry[]" value="${e.id}" class="form-check-input" id="${'jenis_'+i}">
-                                <label class="form-check-label" for="${'jenis_'+i}">${e.jenis +' - '+ formatRupiah(e.biaya)}</label>
+                                <input data-generate="${data_generate}" type="checkbox" name="jenis_laundry[]" value="${e.id}" data-biaya="${e.biaya}" class="form-check-input jenis_laundry jenis_laundry_generate_${data_generate}" id="${'jenis_'+i+'_'+data_generate}">
+                                <label class="form-check-label" for="${'jenis_'+i+'_'+data_generate}">${e.jenis +' - '+ formatRupiah(e.biaya)}</label>
                             </div>
                         `;
                     });
-                    $('#checkbox_jenis_laundry').html(html);
+                    $('.data_jenis_laundry_' + data_generate).html(html);
 
-                    $('#radio_estimasi_penanganan').html('');
+                    $('.data_estimasi_' + data_generate).html('');
                     var html = '';
                     $.map(res.data.jenisPenanganan, function(e, i) {
                         html += `
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="estimasi_penanganan" value="${e.id}" id="${'estimasi_'+i}">
-                                <label class="form-check-label" for="${'estimasi_'+i}">
+                                <input required data-generate="${data_generate}" class="form-check-input estimasi_penanganan estimasi_penanganan_generate_${data_generate}" data-biaya="${e.biaya}" type="radio" name="estimasi_penanganan_${data_generate}" value="${e.id}" id="${'estimasi_'+i+'_'+data_generate}">
+                                <label class="form-check-label" for="${'estimasi_'+i+'_'+data_generate}">
                                     ${e.jenis +' - '+ formatRupiah(e.biaya)}
                                 </label>
                             </div>
                         `;
                     });
-                    $('#radio_estimasi_penanganan').html(html);
+                    $('.data_estimasi_' + data_generate).html(html);
                 }
             },
         });
     });
 
-    $('#kelengkapan_barang').on('change', function() {
-        var total = 0;
-        $('#kelengkapan_barang option:selected').each(function() {
-            var val = $(this).data('biaya');
-            total += val;
-        });
-        console.log(total);
+    $('body').on('change', '.estimasi_penanganan', function() {
+        var data_generate = $(this).data('generate');
+        change_pilihan(data_generate);
+    });
+
+    $('body').on('change', '.jenis_laundry', function() {
+        var data_generate = $(this).data('generate');
+        change_pilihan(data_generate);
     });
 </script>

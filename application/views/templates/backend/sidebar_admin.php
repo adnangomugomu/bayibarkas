@@ -40,6 +40,30 @@
                                 <span>Rekap Data</span>
                             </a>
                         </li>
+                        <li>
+                            <a class="<?= cek_aktif(@$li_active, 'laundry_ref_jenis_barang', 'active') ?>" href="<?= base_url('backend/admin/laundry/ref_jenis_barang') ?>">
+                                <i class="bx bx-share-alt"></i>
+                                <span>Ref. Jenis Barang</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="<?= cek_aktif(@$li_active, 'laundry_ref_jenis_laundry', 'active') ?>" href="<?= base_url('backend/admin/laundry/ref_jenis_laundry') ?>">
+                                <i class="bx bx-share-alt"></i>
+                                <span>Ref. Jenis Laundry</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="<?= cek_aktif(@$li_active, 'laundry_setting_estimasi_penanganan', 'active') ?>" href="<?= base_url('backend/admin/laundry/setting_estimasi_penanganan') ?>">
+                                <i class="bx bx-cog"></i>
+                                <span>Conf. Estimasi Pgn</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="<?= cek_aktif(@$li_active, 'laundry_setting_jenis_laundry', 'active') ?>" href="<?= base_url('backend/admin/laundry/setting_jenis_laundry') ?>">
+                                <i class="bx bx-cog"></i>
+                                <span>Conf. Jenis Laundry</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 

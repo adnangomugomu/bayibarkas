@@ -9,7 +9,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- captha -->
-<script src="<?= base_url('assets/plugin/jquery-captcha.min.js') ?>"></script>
+<!-- <script src="<?= base_url('assets/plugin/jquery-captcha.min.js') ?>"></script> -->
 
 <script>
     const URL = "<?= base_url() ?>";   

@@ -55,7 +55,7 @@
                                         <div class="mb-3 form-group">
                                             <label class="form-label">Password</label>
                                             <input type="password" name="password" class="form-control" placeholder="Enter password">
-                                        </div>                                       
+                                        </div>
 
                                         <div class="mb-3">
                                             <button class="btn btn-primary w-100 waves-effect waves-light" type="submit">Log In</button>

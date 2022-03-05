@@ -2,22 +2,24 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Ref_jenis_laundry extends MY_controller
+class Ref_kelengkapan_barang extends MY_controller
 {
 
+    
     public function __construct()
     {
         parent::__construct();
-        $this->path = 'backend/admin/laundry/ref_jenis_laundry/';
-        $this->table = 'ref_jenis_laundry';
+        $this->path = 'backend/admin/laundry/ref_kelengkapan_barang/';
+        $this->table = 'ref_kelengkapan';
         $this->load->model($this->path . 'datatable', 'm_main');
     }
 
     public function index()
     {
+
         $data = [
-            'title' => 'Referensi Jenis laundry',
-            'li_active' => 'laundry_ref_jenis_laundry',
+            'title' => 'Referensi Kelengkapan laundry',
+            'li_active' => 'laundry_ref_kelengkapan_barang',
             'li_open' => 'laundry',
             'uri_segment' => $this->path,
             'content' => $this->path . 'index',
@@ -25,7 +27,7 @@ class Ref_jenis_laundry extends MY_controller
             'breadcrumb' => [
                 'Laundry',
                 'Referensi',
-                'Jenis laundry',
+                'Kelengkapan Barang',
                 'Index',
             ],
         ];
@@ -41,9 +43,20 @@ class Ref_jenis_laundry extends MY_controller
     public function store()
     {
         cek_post();
+        $menu = $this->input->post('menu');
+        if (!hak_akses_sub_menu($menu, 'tambah')) {
+            echo json_encode([
+                'status' => 'failed',
+                'msg' => 'Tidak ada hak akses',
+            ]);
+            die;
+        }
+        // ================= end init =================
+
         $this->db->insert($this->table, [
-            'jenis' => $this->input->post('jenis', true),
-            'urutan' => $this->input->post('urutan', true),
+            'data' => $this->input->post('data', true),
+            'data' => $this->input->post('data', true),
+            'data' => $this->input->post('data', true),
             'created_at' => date('Y-m-d H:i:s'),
         ]);
 
@@ -56,15 +69,19 @@ class Ref_jenis_laundry extends MY_controller
     public function delete()
     {
         cek_post();
+        $menu = $this->input->post('menu');
+        if (!hak_akses_sub_menu($menu, 'hapus')) {
+            echo json_encode([
+                'status' => 'failed',
+                'msg' => 'Tidak ada hak akses',
+            ]);
+            die;
+        }
+        // ================= end init =================
+
         $id = $this->input->post('id', true);
         $this->db->where('id', $id);
         $this->db->update($this->table, [
-            'deleted_at' => date('Y-m-d H:i:s'),
-            'is_active' => '0',
-        ]);
-
-        $this->db->where('id_jenis_laundry', $id);
-        $this->db->update('jenis_barang_has_jenis_laundry', [
             'deleted_at' => date('Y-m-d H:i:s'),
             'is_active' => '0',
         ]);
@@ -78,6 +95,16 @@ class Ref_jenis_laundry extends MY_controller
     public function get()
     {
         cek_post();
+        $menu = $this->input->post('menu');
+        if (!hak_akses_sub_menu($menu, 'lihat')) {
+            echo json_encode([
+                'status' => 'failed',
+                'msg' => 'Tidak ada hak akses',
+            ]);
+            die;
+        }
+        // ================= end init =================
+
         $id = $this->input->post('id', true);
         $this->db->where('id', $id);
         $this->db->where('is_active', '1');
@@ -95,10 +122,21 @@ class Ref_jenis_laundry extends MY_controller
     public function update()
     {
         cek_post();
+        $menu = $this->input->post('menu');
+        if (!hak_akses_sub_menu($menu, 'ubah')) {
+            echo json_encode([
+                'status' => 'failed',
+                'msg' => 'Tidak ada hak akses',
+            ]);
+            die;
+        }
+        // ================= end init =================
+
         $this->db->where('id', $this->input->post('id', true));
         $run = $this->db->update($this->table, [
-            'jenis' => $this->input->post('jenis', true),
-            'urutan' => $this->input->post('urutan', true),
+            'data' => $this->input->post('data', true),
+            'data' => $this->input->post('data', true),
+            'data' => $this->input->post('data', true),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
 
@@ -111,4 +149,4 @@ class Ref_jenis_laundry extends MY_controller
     }
 }
 
-/* End of file Dashboard.php */
+/* End of file Home.php */

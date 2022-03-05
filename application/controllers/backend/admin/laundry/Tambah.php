@@ -47,6 +47,7 @@ class Tambah extends MY_controller
         $alamat = $this->input->post('alamat', true);
 
         $this->db->insert('data_laundry', [
+            'id_status' => 1, //? diterima
             'kode' => $kode_laundry,
             'token' => $token,
             'total' => remove_titik($total_harga),
@@ -55,6 +56,7 @@ class Tambah extends MY_controller
             'alamat' => $alamat,
             'no_hp' => $no_hp,
             'created_at' => date('Y-m-d H:i:s'),
+            'updated_status' => date('Y-m-d H:i:s'),
         ]);
 
         $id_data = $this->db->insert_id();
@@ -62,12 +64,11 @@ class Tambah extends MY_controller
         if (is_array($data_barang)) {
             foreach ($data_barang as $key => $value) {
                 $this->db->insert('data_laundry_has_barang', [
-                    'id_status' => 1, //? diterima
                     'id_data_laundry' => $id_data,
                     'id_jenis_barang' => $value->jenis_barang,
                     'id_estimasi' => $value->estimasi_penanganan,
+                    'biaya_servis' => remove_titik($value->biaya_servis),
                     'sub_total' => remove_titik($value->sub_total),
-                    'updated_status' => date('Y-m-d H:i:s'),
                     'created_at' => date('Y-m-d H:i:s'),
                 ]);
                 $id_data_barang = $this->db->insert_id();

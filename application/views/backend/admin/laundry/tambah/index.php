@@ -98,12 +98,14 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-12">
-                        <button type="button" id="tombol_tambah_barang" class="btn btn-primary btn-sm mb-3">
-                            <i class="fa fa-plus"></i>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4 d-grid">
+                        <button type="button" id="tombol_tambah_barang" class="btn btn-primary mb-3">
+                            <i class="fa fa-plus nr-1"></i>
                             Tambah Barang
                         </button>
                     </div>
+                    <div class="col-md-4"></div>
                 </div>
 
                 <div id="list_data">

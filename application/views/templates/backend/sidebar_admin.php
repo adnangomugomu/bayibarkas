@@ -53,6 +53,12 @@
                             </a>
                         </li>
                         <li>
+                            <a class="<?= cek_aktif(@$li_active, 'laundry_ref_kelengkapan_barang', 'active') ?>" href="<?= base_url('backend/admin/laundry/ref_kelengkapan_barang') ?>">
+                                <i class="bx bx-share-alt"></i>
+                                <span>Ref. Kelengkapan Brg</span>
+                            </a>
+                        </li>
+                        <li>
                             <a class="<?= cek_aktif(@$li_active, 'laundry_setting_estimasi_penanganan', 'active') ?>" href="<?= base_url('backend/admin/laundry/setting_estimasi_penanganan') ?>">
                                 <i class="bx bx-cog"></i>
                                 <span>Conf. Estimasi Pgn</span>

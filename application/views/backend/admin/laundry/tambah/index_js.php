@@ -93,6 +93,7 @@
             var kelengkapan = $('.data_kelengkapan_' + e).val();
             var estimasi_penanganan = $('.estimasi_penanganan_generate_' + e + ':checked').val();
             var sub_total = $('.data_sub_total_' + e).html();
+            var biaya_servis = $('.data_servis_' + e).val();
             var jenis_laundry = [];
 
             $('input:checkbox.jenis_laundry_generate_' + e).each(function() {
@@ -116,6 +117,7 @@
                 kelengkapan: kelengkapan,
                 estimasi_penanganan: estimasi_penanganan,
                 jenis_laundry: jenis_laundry,
+                biaya_servis: biaya_servis,
                 sub_total: sub_total,
             };
             data_barang.push(x);
@@ -216,6 +218,10 @@
         var estimasi = $('.estimasi_penanganan_generate_' + data_generate + ':checked').data('biaya');
         if (estimasi != undefined) total += estimasi;
 
+        var biaya_servis = $('.data_servis_' + data_generate).val();
+        biaya_servis = (biaya_servis == '' || biaya_servis == undefined ? 0 : parseInt(biaya_servis.replaceAll('.', '')));
+        total += biaya_servis;
+
         var key = 'total_generate_' + data_generate;
         tmp_data_total[key] = total;
 
@@ -310,29 +316,37 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Kelengkapan Barang</label>
-                                    <select placeholder="Pilih data" data-generate="${count_generate}" class="form-control js_select2 data_kelengkapan_${count_generate} kelengkapan_barang" name="kelengkapan_barang[]" multiple></select>
+                                    <select data-placeholder="Pilih kelengkapan barang" data-generate="${count_generate}" class="form-control js_select2 data_kelengkapan_${count_generate} kelengkapan_barang" name="kelengkapan_barang[]" multiple></select>
                                 </div>
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label class="form-label">Jenis Laundry</label>
-                                    <div data-generate="${count_generate}" class="form-group data_jenis_laundry_${count_generate} checkbox_jenis_laundry">
+                           <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Jenis Laundry</label>
+                                            <div data-generate="${count_generate}" class="form-group data_jenis_laundry_${count_generate} checkbox_jenis_laundry">
 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Estimasi Penanganan</label>
+                                            <div data-generate="${count_generate}" class="form-group data_estimasi_${count_generate} radio_estimasi_penanganan">
+
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label class="form-label">Estimasi Penanganan</label>
-                                    <div data-generate="${count_generate}" class="form-group data_estimasi_${count_generate} radio_estimasi_penanganan">
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
+                           </div>
+                            <div class="col-md-6">
+                           
+                                <label class="form-label">Biaya Servis</label>
+                                <input placeholder="biaya servis" data-generate="${count_generate}" class="form-control data_rupiah data_servis_${count_generate} servis_biaya"/>
+                          
                                 <p class="text-bold float-end">Sub Total Rp <span data-generate="${count_generate}" class="data_sub_total_${count_generate} sub_total">0</span> </p>
                             </div>
                         </div>
@@ -413,6 +427,8 @@
                         `;
                     });
                     $('.data_estimasi_' + data_generate).html(html);
+                    $('.data_servis_' + data_generate).val('');
+                    change_pilihan(data_generate);
                 }
             },
         });
@@ -424,6 +440,11 @@
     });
 
     $('body').on('change', '.jenis_laundry', function() {
+        var data_generate = $(this).data('generate');
+        change_pilihan(data_generate);
+    });
+
+    $('body').on('change', '.servis_biaya', function() {
         var data_generate = $(this).data('generate');
         change_pilihan(data_generate);
     });
